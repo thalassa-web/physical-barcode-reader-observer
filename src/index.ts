@@ -1,6 +1,22 @@
 import { Observable } from 'rxjs';
 import { buffer, filter, map } from 'rxjs/operators';
 
+/**
+ * Special keyboard keys
+ */
+export enum SpecialKeys {
+    ALT = 'Alt',
+    SHIFT = 'Shift',
+    ENTER = 'Enter',
+    CTRL = 'Control',
+    CAPS = 'CapsLock',
+    ALT_GR = 'AltGraph',
+    OS = 'OS'
+}
+
+/**
+ * Class for observe physical barcode reading
+ */
 export class PhysicalBarcodeReaderObserver {
   /**
    * The usable observable to subscribe to
@@ -13,7 +29,7 @@ export class PhysicalBarcodeReaderObserver {
   /**
    * The enter key pressed event
    */
-  private readonly onEnter$: Observable<KeyboardEvent> = this.onKeypress$.pipe(filter(ev => ev.key === 'Enter'));
+  private readonly onEnter$: Observable<KeyboardEvent> = this.onKeypress$.pipe(filter(ev => ev.key === SpecialKeys.ENTER.toString()));
   /**
    * Getting reader with specific prefix
    * @param prefixes
