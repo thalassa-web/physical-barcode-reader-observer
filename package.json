@@ -1,0 +1,39 @@
+{
+  "name": "physical-barcode-reader-observer",
+  "version": "1.0.0",
+  "description": "Library which observe keyboard event outside inputs to listen barcode reader events",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare" : "npm run build",
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "version" : "npm run format && git add -A src",
+    "postversion" : "git push && git push --tags"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tii-bruno/physical-barcode-reader-observer.git"
+  },
+  "keywords": [],
+  "author": "Bruno Desprez <bdesprez@thalassa.fr>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tii-bruno/physical-barcode-reader-observer/issues"
+  },
+  "homepage": "https://github.com/tii-bruno/physical-barcode-reader-observer#readme",
+  "devDependencies": {
+    "prettier": "^1.15.3",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.17.0",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "rxjs": "^5.5.11"
+  },
+  "files": ["lib/**/*"]
+}
