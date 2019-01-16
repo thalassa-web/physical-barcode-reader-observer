@@ -39,7 +39,7 @@ export class PhysicalBarcodeReaderObserver {
    * @param prefixes
    * @param debug
    */
-  constructor(prefixes: string[] = [], onTa) {
+  constructor(prefixes: string[] = []) {
     this.onBarcodeRead$ = this.onKeypress$.pipe(
       tap(ev => this.onDebug$.next({ text: `Keypress: `, info: ev })),
       buffer(this.onEnter$),
