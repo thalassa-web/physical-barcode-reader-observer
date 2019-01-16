@@ -9,17 +9,17 @@
     "build": "tsc",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
-    "prepare" : "npm run build",
-    "prepublishOnly" : "npm test && npm run lint",
-    "preversion" : "npm run lint",
-    "version" : "npm run format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepare": "npm run build",
+    "prepublishOnly": "npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tii-bruno/physical-barcode-reader-observer.git"
   },
-  "keywords": [],
+  "keywords": ["barcode","rxjs","typescript"],
   "author": "Bruno Desprez <bdesprez@thalassa.fr>",
   "license": "ISC",
   "bugs": {
@@ -35,5 +35,7 @@
   "dependencies": {
     "rxjs": "^5.5.11"
   },
-  "files": ["lib/**/*"]
+  "files": [
+    "lib/**/*"
+  ]
 }
