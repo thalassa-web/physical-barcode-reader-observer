@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {buffer, filter, map, tap} from 'rxjs/operators';
 
 /**
@@ -22,6 +22,8 @@ export class PhysicalBarcodeReaderObserver {
    * The usable observable to subscribe to
    */
   public onBarcodeRead$: Observable<string>;
+
+  public onDebug$: Subject<{text: string, info: any}> = new Subject<{text: string, info: any}>();
   /**
    * Keypress event on document to Observable
    */
@@ -37,20 +39,19 @@ export class PhysicalBarcodeReaderObserver {
    * @param prefixes
    * @param debug
    */
-  constructor(prefixes: string[] = [], debug: boolean = false) {
+  constructor(prefixes: string[] = [], onTa) {
     this.onBarcodeRead$ = this.onKeypress$.pipe(
-      tap(ev => debug ? console.log('Keypress: ', ev) : null),
+      tap(ev => this.onDebug$.next({text: `Keypress: `, info: ev})),
       buffer(this.onEnter$),
-      tap(chars => debug ? console.log('Chars: ', chars) : null),
+      tap(chars => this.onDebug$.next({text: `Chars: `, info: chars})),
       filter(chars => {
           const charsBegin = chars.slice(0, prefixes.length).join();
-          if (debug) {
-              console.log('Begin: ', charsBegin, 'Prefixes: ', prefixes.join());
-          }
+          this.onDebug$.next({text: `Begin: `, info: charsBegin})
+          this.onDebug$.next({text: `Prefixes: `, info: prefixes.join()})
           return charsBegin === prefixes.join()
       }),
       map(events => events.filter(ev => ev.key.length === 1).reduce((acc, cur) => acc + cur.key, '')),
-      tap(value => debug ? console.log('Result: ', value) : null)
+      tap(value => this.onDebug$.next({text: `Result: `, info: value}))
     );
   }
 }
