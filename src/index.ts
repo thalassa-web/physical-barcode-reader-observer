@@ -1,5 +1,5 @@
 import {Observable} from 'rxjs';
-import {bufferToggle, filter, map} from 'rxjs/operators';
+import {buffer, filter, map} from 'rxjs/operators';
 
 export class PhysicalBarcodeReaderObserver {
     /**
@@ -16,13 +16,13 @@ export class PhysicalBarcodeReaderObserver {
     private readonly onEnter$: Observable<KeyboardEvent> = this.onKeypress$.pipe(filter(ev => ev.key === 'Enter'));
     /**
      * Getting reader with specific prefix
-     * @param prefix
+     * @param prefixes
      */
-    constructor(prefix?: string) {
-        const onStart$ = this.onKeypress$.pipe(filter(ev => !prefix || ev.key === prefix));
+    constructor(prefixes?: string[]) {
         this.onBarcodeRead$ = this.onKeypress$.pipe(
-            bufferToggle(onStart$, () => this.onEnter$),
-            map(events => events.filter(ev => ev.key.length === 1).reduce((acc, cur) => acc + cur.key, '')),
+            buffer(this.onEnter$),
+            filter(chars => !prefixes || prefixes.length === 0 || chars.slice(0,prefixes.length).join() === prefixes.join()),
+            map(events => events.filter(ev => ev.key.length === 1).reduce((acc, cur) => acc + cur.key, ''))
         );
     }
 }
