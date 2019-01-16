@@ -1,6 +1,6 @@
 {
   "name": "physical-barcode-reader-observer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Library which observe keyboard event outside inputs to listen barcode reader events",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -19,7 +19,11 @@
     "type": "git",
     "url": "git+https://github.com/tii-bruno/physical-barcode-reader-observer.git"
   },
-  "keywords": ["barcode","rxjs","typescript"],
+  "keywords": [
+    "barcode",
+    "rxjs",
+    "typescript"
+  ],
   "author": "Bruno Desprez <bdesprez@thalassa.fr>",
   "license": "ISC",
   "bugs": {
