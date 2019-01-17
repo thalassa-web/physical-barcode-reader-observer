@@ -48,7 +48,7 @@ const prefixesBuffer = (prefixes: string[]) => {
  * @param keys
  */
 const keysToBarcodeResult = (keys: string[]) => {
-  const result: IBarcodeResult = { barcode: keys.join(), type: BarcodeType.UNKNOWN };
+  const result: IBarcodeResult = { barcode: keys.join(''), type: BarcodeType.UNKNOWN };
   if (/\d{13}/.test(result.barcode)) {
     result.type = BarcodeType.EAN_13;
   }
