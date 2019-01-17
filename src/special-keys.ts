@@ -9,5 +9,5 @@ export enum SpecialKeys {
   CAPS = 'CapsLock',
   ALT_GR = 'AltGraph',
   OS = 'OS',
-  NUM_LOCK = 'NumLock'
+  NUM_LOCK = 'NumLock',
 }
