@@ -5,15 +5,15 @@ import {keysToBarcodeResult} from "./i-barcode-result";
 /**
  * Keypress event on document to Observable
  */
-export const onKeypress$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keypress');
+const onKeypress$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keypress');
 /**
  * Keydown event on document to Observable
  */
-export const onKeydown$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keydown');
+const onKeydown$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keydown');
 /**
  * Keypress on printable values on document to Observable
  */
-export const onPrintableKeypress$: Observable<string> = onKeypress$.pipe(
+const onPrintableKeypress$: Observable<string> = onKeypress$.pipe(
     map(ev => ev.key),
     filter(key => key.length === 1),
 );
@@ -21,7 +21,7 @@ export const onPrintableKeypress$: Observable<string> = onKeypress$.pipe(
  * Emit the last pressed key when no key was pressed during a certain amount of time
  * @param time
  */
-export const lastKeypressAfterTime: (number) => Observable<KeyboardEvent> = (time: number) => onKeypress$.pipe(
+const lastKeypressAfterTime: (number) => Observable<KeyboardEvent> = (time: number) => onKeypress$.pipe(
     map(ev => ev.key),
     bufferTime(time),
     filter(keys => keys.length === 0),
@@ -31,7 +31,7 @@ export const lastKeypressAfterTime: (number) => Observable<KeyboardEvent> = (tim
  * Emit an array of printable keys until no keys was pressed during a certain amount of time
  * @param time
  */
-export const bufferPrintableKeypressUntilTime = (time: number) => {
+const bufferPrintableKeypressUntilTime = (time: number) => {
     return onPrintableKeypress$.pipe(
         buffer(lastKeypressAfterTime(time)),
         filter(keys => keys.length > 0)
@@ -45,7 +45,7 @@ export const bufferPrintableKeypressUntilTime = (time: number) => {
  * @param prefixes
  * @param time
  */
-export const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number = 200) => {
+const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number = 200) => {
     if (prefixes.length === 0) {
         return bufferPrintableKeypressUntilTime(time);
     }
@@ -63,6 +63,7 @@ export const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: 
 /**
  * Emit the read barcode between prefixes and until no key was pressed during a certain amount of time
  * If there is no defined prefix, emit the read barcode between the first pressed key and until no key was pressed during a certain amount of time
+ * @see SpecialKeys for prefixes
  * @param prefixes
  * @param time
  */
