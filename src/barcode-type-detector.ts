@@ -50,7 +50,7 @@ const isEan = (value: string, length: 8 | 13): boolean => isOnlyDigits(value, le
  * @param value
  * @param length
  */
-const isUpc = (value: string, length: 7 | 12): boolean => isOnlyDigits(value, length) && eanKeyController(value);
+const isUpc = (value: string, length: 7 | 12): boolean => isOnlyDigits(value, length) && upcKeyController(value);
 /**
  * EAN_13 = ONLY 13 digits + control key checking
  */
@@ -58,7 +58,7 @@ const ean13Definer: IBarcodeTypeDefiner = { method: value => isEan(value, 13), t
 /**
  * UPC_A = ONLY 12 digits + control key checking
  */
-const upcADefiner: IBarcodeTypeDefiner = { method: value => isUpc(value, 7), type: BarcodeType.UPC_A };
+const upcADefiner: IBarcodeTypeDefiner = { method: value => isUpc(value, 12), type: BarcodeType.UPC_A };
 /**
  * EAN_8 = ONLY 8 digits + control key checking
  */

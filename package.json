@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\"",
+    "test": "jest --config jestconfig.json",
     "build": "tsc && browserify lib/index.js --standalone PBro > dist/pbro.js && uglifyjs dist/pbro.js -c -m > dist/pbro.min.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
@@ -31,7 +31,10 @@
   },
   "homepage": "https://github.com/tii-bruno/physical-barcode-reader-observer#readme",
   "devDependencies": {
+    "@types/jest": "^23.3.12",
+    "jest": "^23.6.0",
     "prettier": "^1.15.3",
+    "ts-jest": "^23.10.5",
     "tslint": "^5.12.1",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.2"
