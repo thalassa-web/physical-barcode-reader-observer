@@ -1,4 +1,6 @@
+import {BarcodeTypeDetector} from "./barcode-type-detector";
 import { BarcodeType } from './enums';
+
 /**
  * Define a barcodeResult
  */
@@ -30,10 +32,7 @@ export class BarcodeResult {
    * Getting the barcode type
    */
   get type(): BarcodeType {
-    if (/^\d{13}$/.test(this._barcode)) {
-      return BarcodeType.EAN_13;
-    }
-    return BarcodeType.UNKNOWN;
+    return BarcodeTypeDetector.detect(this._barcode);
   }
   /**
    * Getting the target of the last KeyboardEvent
