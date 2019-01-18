@@ -15,7 +15,7 @@ Then install the library
     $npm i --save physical-barcode-reader-observer 
     
 ### For simple web project
-Just put the file pbro.js in your folder of JS libraries and add an HTML script node 
+Just put the file pbro.min.js (look into release assets in GitHub) in your folder of JS libraries and add an HTML script node 
 
     <script type="text/javascript" src="[path_to_js_lib]/pbro.min.js" />
     
