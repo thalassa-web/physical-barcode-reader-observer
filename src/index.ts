@@ -42,7 +42,7 @@ const bufferPrintableKeypressUntilTime = (time: number) => {
 const onKeysdown = (keys: string[]) => onKeydown$.pipe(
     map(ev => ev.key),
     bufferCount(keys.length, 1),
-    filter(buffer => buffer.join() === keys.join()),
+    filter(buf => buf.join() === keys.join()),
 );
 /**
  * Emit an array of printable keys when prefixes were detected
