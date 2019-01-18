@@ -1,12 +1,12 @@
 {
   "name": "physical-barcode-reader-observer",
-  "version": "1.0.11",
-  "description": "Library which observe keyboard event outside inputs to listen barcode reader events",
+  "version": "2.0.0",
+  "description": "Library which observe keyboard input events to listen HID barcode reader events",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "tsc",
+    "build": "tsc && browserify lib/index.js --standalone PBro > dist/pbro.js && uglifyjs dist/pbro.js -c -m > dist/pbro.min.js",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
@@ -40,6 +40,7 @@
     "rxjs": "^5.5.11"
   },
   "files": [
-    "lib/**/*"
+    "lib/**/*",
+    "dist/**/*"
   ]
 }

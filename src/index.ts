@@ -1,8 +1,6 @@
-import { Observable } from 'rxjs';
-import { buffer, bufferCount, bufferToggle, filter, map } from 'rxjs/operators';
-import { BarcodeType } from './barcode-type';
-import { IBarcodeResult } from './i-barcode-result';
-import { SpecialKeys } from './special-keys';
+import {Observable} from "rxjs";
+import {buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom} from "rxjs/operators";
+import {BarcodeResult} from "./barcode-result";
 
 /**
  * Keypress event on document to Observable
@@ -11,71 +9,63 @@ const onKeypress$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'k
 /**
  * Keydown event on document to Observable
  */
-const onKeyDown$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keydown');
-/**
- * Keypress on Enter event on document to Observable
- */
-const onEnter$: Observable<KeyboardEvent> = onKeypress$.pipe(filter(ev => ev.key === SpecialKeys.ENTER));
+const onKeydown$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keydown');
 /**
  * Keypress on printable values on document to Observable
  */
 const onPrintableKeypress$: Observable<string> = onKeypress$.pipe(
-  map(ev => ev.key),
-  filter(key => key.length === 1),
+    map(ev => ev.key),
+    filter(key => key.length === 1),
 );
 /**
- * Buffer of printable keys until Enter is pressed
+ * Emit the last pressed key when no key was pressed during a certain amount of time
+ * @param time
  */
-const noPrefixBuffer$: Observable<string[]> = onPrintableKeypress$.pipe(buffer(onEnter$));
+const lastKeypressAfterTime: (number) => Observable<KeyboardEvent> = (time: number) => onKeypress$.pipe(
+    map(ev => ev.key),
+    bufferTime(time),
+    filter(keys => keys.length === 0),
+    withLatestFrom(onKeypress$, (v1,v2) => v2)
+);
 /**
- * Buffer of printable keys between prefixes are «key downed» and Enter is pressed
- * @param prefixes
+ * Emit an array of printable keys until no keys was pressed during a certain amount of time
+ * @param time
  */
-const prefixesBuffer = (prefixes: string[]) => {
+const bufferPrintableKeypressUntilTime = (time: number) => {
   return onPrintableKeypress$.pipe(
-    bufferToggle(
-      onKeyDown$.pipe(
-        map(ev => ev.key),
-        bufferCount(prefixes.length, 1),
-        filter(keys => keys.join() === prefixes.join()),
-      ),
-      _ => onEnter$,
-    ),
+      buffer(lastKeypressAfterTime(time)),
+      filter(keys => keys.length > 0)
   );
 };
 /**
- * Transform array of keys into a IBarcodeResult
- * @param keys
+ * Emit an array of printable keys when prefixes were detected
+ * until no key was pressed during a certain amount of time
+ * If prefixes is empty, return bufferPrintableKeypressUntilTime
+ * Useful to detect barcode reading with an HID barcode reader
+ * @param prefixes
+ * @param time
  */
-const keysToBarcodeResult = (keys: string[]) => {
-  const result: IBarcodeResult = { barcode: keys.join(''), type: BarcodeType.UNKNOWN };
-  if (/\d{13}/.test(result.barcode)) {
-    result.type = BarcodeType.EAN_13;
+const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number = 200) => {
+  if (prefixes.length === 0) {
+    return bufferPrintableKeypressUntilTime(time);
   }
-  return result;
+  return onPrintableKeypress$.pipe(
+      bufferToggle(
+          onKeydown$.pipe(
+              map(ev => ev.key),
+              bufferCount(prefixes.length, 1),
+              filter(keys => keys.join() === prefixes.join()),
+          ),
+          _ => lastKeypressAfterTime(time),
+      ),
+  );
 };
-
 /**
- * Class for observe physical barcode reading
+ * Emit the read barcode between prefixes and until no key was pressed during a certain amount of time
+ * If there is no defined prefix, emit the read barcode between the first pressed key and until no key was pressed during a certain amount of time
+ * @see SpecialKeys for prefixes
+ * @param prefixes
+ * @param time
  */
-export class PhysicalBarcodeReaderObserver {
-  /**
-   * The usable observable to subscribe to
-   */
-  public onBarcodeRead$: Observable<IBarcodeResult> = this.onBarcodeRead();
-  /**
-   * Getting reader with specific prefix
-   * @param prefixes
-   * @param debug
-   */
-  constructor(private prefixes: string[] = []) {}
-
-  /**
-   * Get the observable for barcode reading with specific prefixes
-   */
-  public onBarcodeRead(): Observable<IBarcodeResult> {
-    const bufferized: Observable<string[]> =
-      this.prefixes.length === 0 ? noPrefixBuffer$ : prefixesBuffer(this.prefixes);
-    return bufferized.pipe(map(keys => keysToBarcodeResult(keys)));
-  }
-}
+export const onBarcodeRead = (prefixes: string[] = [], time: number = 200) => bufferPrintableKeypressStartWith(prefixes, time)
+    .pipe(map(keys => new BarcodeResult(keys)));
