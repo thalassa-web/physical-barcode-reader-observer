@@ -7,9 +7,9 @@ import { BarcodeResult } from './barcode-result';
  */
 const onKeypress$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keypress');
 /**
- * Keydown event on document to Observable
+ * Keyup event on document to Observable
  */
-const onKeydown$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keydown');
+const onKeyup$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keyup');
 /**
  * Keypress on printable values on document to Observable
  * Emit a KeyboardEvent
@@ -37,11 +37,11 @@ const bufferPrintableKeypressUntilTime = (time: number) => {
   );
 };
 /**
- * Emit a buffer of downed keys if there was stroke in the same order defined in keys
+ * Emit a buffer of upped keys if there was stroke in the same order defined in keys
  * @param keys
  */
-const onKeysdown = (keys: string[]) =>
-  onKeydown$.pipe(
+const onKeysup = (keys: string[]) =>
+  onKeyup$.pipe(
     map(ev => ev.key),
     bufferCount(keys.length, 1),
     filter(buf => buf.join() === keys.join()),
@@ -58,7 +58,7 @@ const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number 
   if (prefixes.length === 0) {
     return bufferPrintableKeypressUntilTime(time);
   }
-  return onPrintableKeypress$.pipe(bufferToggle(onKeysdown(prefixes), () => lastKeypressAfterTime(time)));
+  return onPrintableKeypress$.pipe(bufferToggle(onKeysup(prefixes), () => lastKeypressAfterTime(time)));
 };
 /**
  * Emit the read barcode between prefixes and until no key was pressed during a certain amount of time
