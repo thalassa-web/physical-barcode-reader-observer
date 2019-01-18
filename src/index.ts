@@ -1,6 +1,6 @@
-import {Observable} from "rxjs";
-import {buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom} from "rxjs/operators";
-import {BarcodeResult} from "./barcode-result";
+import { Observable } from 'rxjs';
+import { buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom } from 'rxjs/operators';
+import { BarcodeResult } from './barcode-result';
 
 /**
  * Keypress event on document to Observable
@@ -19,31 +19,33 @@ const onPrintableKeypress$ = onKeypress$.pipe(filter(ev => ev.key.length === 1))
  * Emit the last pressed key when no key was pressed during a certain amount of time
  * @param time
  */
-const lastKeypressAfterTime = (time: number) => onKeypress$.pipe(
+const lastKeypressAfterTime = (time: number) =>
+  onKeypress$.pipe(
     map(ev => ev.key),
     bufferTime(time),
     filter(keys => keys.length === 0),
-    withLatestFrom(onKeypress$, (v1,v2) => v2)
-);
+    withLatestFrom(onKeypress$, (v1, v2) => v2),
+  );
 /**
  * Emit an array of printable keys until no keys was pressed during a certain amount of time
  * @param time
  */
 const bufferPrintableKeypressUntilTime = (time: number) => {
   return onPrintableKeypress$.pipe(
-      buffer(lastKeypressAfterTime(time)),
-      filter(keys => keys.length > 0)
+    buffer(lastKeypressAfterTime(time)),
+    filter(keys => keys.length > 0),
   );
 };
 /**
  * Emit a buffer of downed keys if there was stroke in the same order defined in keys
  * @param keys
  */
-const onKeysdown = (keys: string[]) => onKeydown$.pipe(
+const onKeysdown = (keys: string[]) =>
+  onKeydown$.pipe(
     map(ev => ev.key),
     bufferCount(keys.length, 1),
     filter(buf => buf.join() === keys.join()),
-);
+  );
 /**
  * Emit an array of printable keys when prefixes were detected
  * until no key was pressed during a certain amount of time
@@ -56,9 +58,7 @@ const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number 
   if (prefixes.length === 0) {
     return bufferPrintableKeypressUntilTime(time);
   }
-  return onPrintableKeypress$.pipe(
-      bufferToggle(onKeysdown(prefixes),() => lastKeypressAfterTime(time)),
-  );
+  return onPrintableKeypress$.pipe(bufferToggle(onKeysdown(prefixes), () => lastKeypressAfterTime(time)));
 };
 /**
  * Emit the read barcode between prefixes and until no key was pressed during a certain amount of time
@@ -67,5 +67,5 @@ const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number 
  * @param prefixes
  * @param time
  */
-export const onBarcodeRead = (prefixes: string[] = [], time: number = 200) => bufferPrintableKeypressStartWith(prefixes, time)
-    .pipe(map(keys => new BarcodeResult(keys)));
+export const onBarcodeRead = (prefixes: string[] = [], time: number = 200) =>
+  bufferPrintableKeypressStartWith(prefixes, time).pipe(map(keys => new BarcodeResult(keys)));
