@@ -23,13 +23,13 @@ const isOnlyDigits = (value: string, length: number): boolean => onlyDigitsRegex
  */
 const getEanControlKey = (value: string): number => {
   const sumCtrl = value
-      .slice(0, value.length - 1)
-      .split('')
-      // Chars are only digits
-      .map(digit => parseInt(digit, 10))
-      // Each even char column index is multiply by 3
-      // And we make the sum
-      .reduce((acc, digit, index) => acc + ((index % 2) ? digit : (digit * 3)), 0);
+    .slice(0, value.length - 1)
+    .split('')
+    // Chars are only digits
+    .map(digit => parseInt(digit, 10))
+    // Each even char column index is multiply by 3
+    // And we make the sum
+    .reduce((acc, digit, index) => acc + (index % 2 ? digit : digit * 3), 0);
   return 10 - (sumCtrl % 10);
 };
 /**
