@@ -13,7 +13,7 @@ const onKeydown$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'ke
 /**
  * Keypress on printable values on document to Observable
  */
-const onPrintableKeypress$: Observable<string> = onKeypress$.pipe(
+const onPrintableKeypress$ = onKeypress$.pipe(
     map(ev => ev.key),
     filter(key => key.length === 1),
 );
@@ -21,7 +21,7 @@ const onPrintableKeypress$: Observable<string> = onKeypress$.pipe(
  * Emit the last pressed key when no key was pressed during a certain amount of time
  * @param time
  */
-const lastKeypressAfterTime: (number) => Observable<KeyboardEvent> = (time: number) => onKeypress$.pipe(
+const lastKeypressAfterTime = (time: number) => onKeypress$.pipe(
     map(ev => ev.key),
     bufferTime(time),
     filter(keys => keys.length === 0),

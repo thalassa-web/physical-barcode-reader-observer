@@ -1,5 +1,4 @@
 import {BarcodeType} from './enums';
-
 /**
  * Define a barcodeResult
  */
@@ -7,7 +6,7 @@ export class BarcodeResult {
     /**
      * The barcode value
      */
-    private _barcode: string;
+    private readonly _barcode: string;
     /**
      * Construct from an array of strings
      * @param keys
@@ -18,14 +17,13 @@ export class BarcodeResult {
     /**
      * Getting the barcode value
      */
-    get barcode(): string {
+    get barcode():string {
         return this._barcode;
     }
-
     /**
      * Getting the barcode type
      */
-    get type(): BarcodeType {
+    get type():BarcodeType {
         if (/\d{13}/.test(this._barcode)) {
             return BarcodeType.EAN_13;
         }
