@@ -1,4 +1,4 @@
-import {BarcodeType} from './enums';
+import { BarcodeType } from './enums';
 
 /**
  * Define how to determine a barcode type
@@ -23,12 +23,13 @@ const isOnlyDigits = (value: string, length: number): boolean => onlyDigitsRegex
  * @param value Barcode without control key
  */
 const getEanControlKey = (value: string): number => {
-    // Split the string into array of chars
-  const sumCtrl = value.split('')
+  // Split the string into array of chars
+  const sumCtrl = value
+    .split('')
     // Chars are only digits
     // Each even char column index is multiply by 3
     // And we make the sum
-    .reduce((acc, digit, index) => acc + ((index % 2 ? 3 : 1) * parseInt(digit, 10)), 0);
+    .reduce((acc, digit, index) => acc + (index % 2 ? 3 : 1) * parseInt(digit, 10), 0);
   return 10 - (sumCtrl % 10);
 };
 /**
@@ -55,16 +56,16 @@ const isUpc = (value: string): boolean => isOnlyDigits(value, 12) && eanKeyContr
  * List of definers
  */
 const definersList: IBarcodeTypeDefiner[] = [
-    { method: value => isEan(value, 13), type: BarcodeType.EAN_13 },
-    { method: value => isUpc(value), type: BarcodeType.UPC_A },
-    { method: value => isEan(value, 8), type: BarcodeType.EAN_8 }
+  { method: value => isEan(value, 13), type: BarcodeType.EAN_13 },
+  { method: value => isUpc(value), type: BarcodeType.UPC_A },
+  { method: value => isEan(value, 8), type: BarcodeType.EAN_8 },
 ];
 /**
  * Detect the barcode type
  * @param value
  */
 export const detectBarcodeType = (value: string) => {
-    return definersList
-        .filter(definer => definer.method(value))
-        .reduce((type, curr) => type === BarcodeType.UNKNOWN ? curr.type : type, BarcodeType.UNKNOWN);
-}
+  return definersList
+    .filter(definer => definer.method(value))
+    .reduce((type, curr) => (type === BarcodeType.UNKNOWN ? curr.type : type), BarcodeType.UNKNOWN);
+};

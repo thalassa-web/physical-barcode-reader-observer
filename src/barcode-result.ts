@@ -1,4 +1,4 @@
-import {detectBarcodeType} from './barcode-type-detector';
+import { detectBarcodeType } from './barcode-type-detector';
 import { BarcodeType } from './enums';
 
 /**
