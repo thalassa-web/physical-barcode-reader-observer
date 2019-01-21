@@ -29,8 +29,10 @@ The RxJS created observable emits a BarcodeResult when a barcode is read.
          target: EventTarget
      }
     
-Currently, there is only two types :
-  - EAN_13 : When the barcode value is 13 digits
+Currently, there is only four types :
+  - EAN_13 : Only 13 digits + control key checking
+  - UPC_A : Only 12 digits + control key checking
+  - EAN_8 : Only 8 digits + control key checking
   - UNKNOWN
   
 To help you to avoid typing errors, I made an enum with some special keys :
