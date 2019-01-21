@@ -1,4 +1,5 @@
-import { BarcodeType } from './enums';
+import {BarcodeType} from './enums';
+
 /**
  * Define how to determine a barcode type
  */
@@ -51,36 +52,19 @@ const isEan = (value: string, length: 8 | 13): boolean => isOnlyDigits(value, le
  */
 const isUpc = (value: string): boolean => isOnlyDigits(value, 12) && eanKeyController(`0${value}`);
 /**
- * EAN_13 = ONLY 13 digits + control key checking
+ * List of definers
  */
-const ean13Definer: IBarcodeTypeDefiner = { method: value => isEan(value, 13), type: BarcodeType.EAN_13 };
+const definersList: IBarcodeTypeDefiner[] = [
+    { method: value => isEan(value, 13), type: BarcodeType.EAN_13 },
+    { method: value => isUpc(value), type: BarcodeType.UPC_A },
+    { method: value => isEan(value, 8), type: BarcodeType.EAN_8 }
+];
 /**
- * UPC_A = ONLY 12 digits + control key checking
+ * Detect the barcode type
+ * @param value
  */
-const upcADefiner: IBarcodeTypeDefiner = { method: value => isUpc(value), type: BarcodeType.UPC_A };
-/**
- * EAN_8 = ONLY 8 digits + control key checking
- */
-const ean8Definer: IBarcodeTypeDefiner = { method: value => isEan(value, 8), type: BarcodeType.EAN_8 };
-/**
- * Detector of barcode type
- */
-export class BarcodeTypeDetector {
-  /**
-   * Type detection
-   * @param value
-   */
-  public static detect(value: string): BarcodeType {
-    for (const definer of BarcodeTypeDetector.definers) {
-      // The first compatible type is returned
-      if (definer.method(value)) {
-        return definer.type;
-      }
-    }
-    return BarcodeType.UNKNOWN;
-  }
-  /**
-   * List of definers
-   */
-  private static readonly definers: IBarcodeTypeDefiner[] = [ean13Definer, upcADefiner, ean8Definer];
+export const detectBarcodeType = (value: string) => {
+    return definersList
+        .filter(definer => definer.method(value))
+        .reduce((type, curr) => type === BarcodeType.UNKNOWN ? curr.type : type, BarcodeType.UNKNOWN);
 }

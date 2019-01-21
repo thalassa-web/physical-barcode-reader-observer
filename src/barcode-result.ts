@@ -1,4 +1,4 @@
-import { BarcodeTypeDetector } from './barcode-type-detector';
+import {detectBarcodeType} from './barcode-type-detector';
 import { BarcodeType } from './enums';
 
 /**
@@ -32,7 +32,7 @@ export class BarcodeResult {
    * Getting the barcode type
    */
   get type(): BarcodeType {
-    return BarcodeTypeDetector.detect(this._barcode);
+    return detectBarcodeType(this._barcode);
   }
   /**
    * Getting the target of the last KeyboardEvent
