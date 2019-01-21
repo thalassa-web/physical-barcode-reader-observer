@@ -75,6 +75,11 @@ In the example bellow, event will emit only if the NumLock key is stroke twice a
 ### For simple web project
 The library is build as a standalone project in the pbro.min.js file and under the "PBro" name.  
 
-    PBro.onBarcodeRead().subscribe(function (result) {
+    var event = PBro.onBarcodeRead().subscribe(function (result) {
         console.log(result);
     });
+
+### Be careful
+When you don't need to listen the event anymore, don't forget to unsubscribe it ...
+
+    event.unsubscribe();
