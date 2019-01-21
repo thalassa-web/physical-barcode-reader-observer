@@ -19,17 +19,15 @@ const onlyDigitsRegexp = (length: number): RegExp => new RegExp(`^\\d{${length}}
 const isOnlyDigits = (value: string, length: number): boolean => onlyDigitsRegexp(length).test(value);
 /**
  * Control key calculation
- * @param value
+ * @param value Barcode without control key
  */
 const getEanControlKey = (value: string): number => {
-  const sumCtrl = value
-    .slice(0, value.length - 1)
-    .split('')
+    // Split the string into array of chars
+  const sumCtrl = value.split('')
     // Chars are only digits
-    .map(digit => parseInt(digit, 10))
     // Each even char column index is multiply by 3
     // And we make the sum
-    .reduce((acc, digit, index) => acc + (index % 2 ? digit : digit * 3), 0);
+    .reduce((acc, digit, index) => acc + ((index % 2 ? 3 : 1) * parseInt(digit, 10)), 0);
   return 10 - (sumCtrl % 10);
 };
 /**
@@ -38,7 +36,7 @@ const getEanControlKey = (value: string): number => {
  */
 const eanKeyController = (value: string): boolean => {
   // The calculated control key has to be the same as the last char in value
-  return parseInt(value.slice(value.length - 1), 10) === getEanControlKey(value);
+  return parseInt(value.slice(value.length - 1), 10) === getEanControlKey(value.slice(0, value.length - 1));
 };
 /**
  * Is the value an EAN with specified length ?
@@ -51,7 +49,7 @@ const isEan = (value: string, length: 8 | 13): boolean => isOnlyDigits(value, le
  * @param value
  * @param length
  */
-const isUpc = (value: string): boolean => isOnlyDigits(value, 12) && eanKeyController(value);
+const isUpc = (value: string): boolean => isOnlyDigits(value, 12) && eanKeyController(`0${value}`);
 /**
  * EAN_13 = ONLY 13 digits + control key checking
  */
