@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tii-bruno/physical-barcode-reader-observer.git"
+    "url": "git+https://github.com/thalassa-web/physical-barcode-reader-observer.git"
   },
   "keywords": [
     "barcode",
@@ -27,9 +27,9 @@
   "author": "Bruno Desprez <bdesprez@thalassa.fr>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/tii-bruno/physical-barcode-reader-observer/issues"
+    "url": "https://github.com/thalassa-web/physical-barcode-reader-observer/issues"
   },
-  "homepage": "https://github.com/tii-bruno/physical-barcode-reader-observer#readme",
+  "homepage": "https://github.com/thalassa-web/physical-barcode-reader-observer#readme",
   "devDependencies": {
     "@types/jest": "^23.3.12",
     "jest": "^23.6.0",
