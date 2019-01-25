@@ -1,7 +1,7 @@
 # Physical Barcode Reader Observer
 
 This library allows you to easily listen an HID barcode reader events on the document (DOM).  
-It uses the RxJS library, to know more about it : https://rxjs-dev.firebaseapp.com/
+It uses the RxJS 6 library, to know more about it : https://rxjs-dev.firebaseapp.com/
 
 ## Installation
 ### For node / Angular / Ionic … projects
