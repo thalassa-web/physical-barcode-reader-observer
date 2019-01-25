@@ -14,7 +14,7 @@ const onKeyup$ = fromEvent(document, 'keyup');
  * Keypress on printable values on document to Observable
  * Emit a KeyboardEvent
  */
-const onPrintableKeypress$ = onKeypress$.pipe(filter(ev => (ev instanceof KeyboardEvent && ev.key.length === 1)));
+const onPrintableKeypress$ = onKeypress$.pipe(filter(ev => ev instanceof KeyboardEvent && ev.key.length === 1));
 /**
  * Emit the last pressed key when no key was pressed during a certain amount of time
  * @param time
