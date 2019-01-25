@@ -1,27 +1,27 @@
-import { Observable } from 'rxjs';
+import { fromEvent } from 'rxjs';
 import { buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom } from 'rxjs/operators';
 import { BarcodeResult } from './barcode-result';
 
 /**
  * Keypress event on document to Observable
  */
-const onKeypress$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keypress');
+const onKeypress$ = fromEvent(document, 'keypress');
 /**
  * Keyup event on document to Observable
  */
-const onKeyup$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keyup');
+const onKeyup$ = fromEvent(document, 'keyup');
 /**
  * Keypress on printable values on document to Observable
  * Emit a KeyboardEvent
  */
-const onPrintableKeypress$ = onKeypress$.pipe(filter(ev => ev.key.length === 1));
+const onPrintableKeypress$ = onKeypress$.pipe(filter(ev => (ev instanceof KeyboardEvent && ev.key.length === 1)));
 /**
  * Emit the last pressed key when no key was pressed during a certain amount of time
  * @param time
  */
 const lastKeypressAfterTime = (time: number) =>
   onKeypress$.pipe(
-    map(ev => ev.key),
+    map(ev => (ev instanceof KeyboardEvent ? ev.key : '')),
     bufferTime(time),
     filter(keys => keys.length === 0),
     withLatestFrom(onKeypress$, (v1, v2) => v2),
@@ -42,7 +42,7 @@ const bufferPrintableKeypressUntilTime = (time: number) => {
  */
 const onKeysup = (keys: string[]) =>
   onKeyup$.pipe(
-    map(ev => ev.key),
+    map(ev => (ev instanceof KeyboardEvent ? ev.key : '')),
     bufferCount(keys.length, 1),
     filter(buf => buf.join() === keys.join()),
   );

@@ -49,7 +49,6 @@ const isEan = (value: string, length: 8 | 13): boolean => isOnlyDigits(value, le
 /**
  * Is the value an UPC with specified length ?
  * @param value
- * @param length
  */
 const isUpc = (value: string): boolean => isOnlyDigits(value, 12) && eanKeyController(`0${value}`);
 /**

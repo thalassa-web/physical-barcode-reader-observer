@@ -17,8 +17,8 @@ export class BarcodeResult {
    * Construct from an array of strings
    * @param keys
    */
-  constructor(keys: KeyboardEvent[]) {
-    this._barcode = keys.reduce((prev, curr) => `${prev}${curr.key}`, '');
+  constructor(keys: Event[]) {
+    this._barcode = keys.map(ev => (ev instanceof KeyboardEvent ? ev.key : '')).join('');
     const lastKeyIndex = keys.length - 1;
     this._target = lastKeyIndex > -1 ? keys[lastKeyIndex].target : null;
   }
