@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import {buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom} from 'rxjs/operators';
+import { buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom } from 'rxjs/operators';
 import { BarcodeResult } from './barcode-result';
 
 /**
@@ -11,7 +11,9 @@ const onKeypress$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'k
  */
 const onKeyup$: Observable<KeyboardEvent> = Observable.fromEvent(document, 'keyup');
 
-const onEnterPress$: Observable<KeyboardEvent> = onKeypress$.pipe(filter(ev => ev.code === "Enter" || ev.which === 13 || ev.charCode === 13));
+const onEnterPress$: Observable<KeyboardEvent> = onKeypress$.pipe(
+  filter(ev => ev.code === 'Enter' || ev.which === 13 || ev.charCode === 13),
+);
 
 /**
  * Keypress on printable values on document to Observable
