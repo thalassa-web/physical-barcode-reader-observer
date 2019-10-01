@@ -1,4 +1,4 @@
-import { fromEvent } from 'rxjs';
+import { fromEvent, merge } from 'rxjs';
 import { buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom } from 'rxjs/operators';
 import { BarcodeResult } from './barcode-result';
 
@@ -10,6 +10,10 @@ const onKeypress$ = fromEvent(document, 'keypress');
  * Keyup event on document to Observable
  */
 const onKeyup$ = fromEvent(document, 'keyup');
+/**
+ * Touche "enter" pressée
+ */
+const onEnterPress$ = onKeypress$.pipe(filter(ev => ev instanceof KeyboardEvent && ev.code === 'Enter'));
 /**
  * Keypress on printable values on document to Observable
  * Emit a KeyboardEvent
@@ -32,7 +36,7 @@ const lastKeypressAfterTime = (time: number) =>
  */
 const bufferPrintableKeypressUntilTime = (time: number) => {
   return onPrintableKeypress$.pipe(
-    buffer(lastKeypressAfterTime(time)),
+    buffer(merge(lastKeypressAfterTime(time), onEnterPress$)),
     filter(keys => keys.length > 0),
   );
 };
