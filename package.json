@@ -1,6 +1,6 @@
 {
   "name": "physical-barcode-reader-observer",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Library which observe keyboard input events to listen HID barcode reader events",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -31,11 +31,11 @@
   },
   "homepage": "https://github.com/thalassa-web/physical-barcode-reader-observer#readme",
   "devDependencies": {
-    "@types/jest": "^23.3.12",
-    "jest": "^23.6.0",
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
     "prettier": "^1.15.3",
-    "ts-jest": "^23.10.5",
-    "tslint": "^5.12.1",
+    "ts-jest": "^24.1.0",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.17.0",
     "typescript": "^3.2.2"
   },
