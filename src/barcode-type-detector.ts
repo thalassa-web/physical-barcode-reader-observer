@@ -24,13 +24,16 @@ const isOnlyDigits = (value: string, length: number): boolean => onlyDigitsRegex
  */
 const getEanControlKey = (value: string): number => {
   // Split the string into array of chars
-  const sumCtrl = value
-    .split('')
-    // Chars are only digits
-    // Each even char column index is multiply by 3
-    // And we make the sum
-    .reduce((acc, digit, index) => acc + (index % 2 ? 3 : 1) * parseInt(digit, 10), 0);
-  return 10 - (sumCtrl % 10);
+  const sumCtrl =
+    value
+      .split('')
+      // Chars are only digits
+      // Each even char column index is multiply by 3
+      // And we make the sum
+      .reduce((acc, digit, index) => acc + (index % 2 ? 3 : 1) * parseInt(digit, 10), 0) % 10;
+  // If the result is 0 the control key is 0
+  // Else it's the complement to 10 of the result (10 - result)
+  return sumCtrl === 0 ? 0 : 10 - sumCtrl;
 };
 /**
  * EAN and UPC control key system based on the Luhn formula
