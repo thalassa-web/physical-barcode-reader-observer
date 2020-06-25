@@ -1,4 +1,4 @@
-import {detectBarcodeType, getAIMSymbology} from './barcode-type-detector';
+import { detectBarcodeType, getAIMSymbology } from './barcode-type-detector';
 import { BarcodeType } from './enums';
 
 /**
