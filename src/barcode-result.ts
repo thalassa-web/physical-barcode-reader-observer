@@ -1,4 +1,4 @@
-import { detectBarcodeType } from './barcode-type-detector';
+import { detectBarcodeType, getAIMSymbology } from './barcode-type-detector';
 import { BarcodeType } from './enums';
 
 /**
@@ -26,7 +26,8 @@ export class BarcodeResult {
    * Getting the barcode value
    */
   get barcode(): string {
-    return this._barcode;
+    // Nettoie le codebarre pour enlever les potentiels préfixes
+    return getAIMSymbology(this._barcode).value;
   }
   /**
    * Getting the barcode type
