@@ -69,6 +69,7 @@ const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number 
 };
 
 export const aimBarcodDetection$: Observable<AIMSymbology> = onKeypress$.pipe(
+  map(ev => ev.key),
   bufferCount(3),
   map(start => AIM_PREFIXES.get(start.join())),
   filter(type => !!type),
