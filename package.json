@@ -1,6 +1,6 @@
 {
   "name": "physical-barcode-reader-observer",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Library which observe keyboard input events to listen HID barcode reader events",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
 import { buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom } from 'rxjs/operators';
 import { BarcodeResult } from './barcode-result';
-import {AIM_PREFIXES} from "./barcode-type-detector";
-import {AIMSymbology} from "./enums";
+import { AIM_PREFIXES } from './barcode-type-detector';
+import { AIMSymbology } from './enums';
 
 /**
  * Keypress event on document to Observable
@@ -69,9 +69,9 @@ const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number 
 };
 
 export const aimBarcodDetection$: Observable<AIMSymbology> = onKeypress$.pipe(
-    bufferCount(3),
-    map(start => AIM_PREFIXES.get(start.join())),
-    filter(type => !!type),
+  bufferCount(3),
+  map(start => AIM_PREFIXES.get(start.join())),
+  filter(type => !!type),
 );
 
 /**
