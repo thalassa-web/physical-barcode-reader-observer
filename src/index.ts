@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs';
 import { buffer, bufferCount, bufferTime, bufferToggle, filter, map, withLatestFrom } from 'rxjs/operators';
 import { BarcodeResult } from './barcode-result';
+import {AIM_PREFIXES} from "./barcode-type-detector";
+import {AIMSymbology} from "./enums";
 
 /**
  * Keypress event on document to Observable
@@ -65,6 +67,13 @@ const bufferPrintableKeypressStartWith = (prefixes: string[] = [], time: number 
   }
   return onPrintableKeypress$.pipe(bufferToggle(onKeysup(prefixes), () => lastKeypressAfterTime(time)));
 };
+
+export const aimBarcodDetection$: Observable<AIMSymbology> = onKeypress$.pipe(
+    bufferCount(3),
+    map(start => AIM_PREFIXES.get(start.join())),
+    filter(type => !!type),
+);
+
 /**
  * Emit the read barcode between prefixes and until no key was pressed during a certain amount of time
  * If there is no defined prefix, emit the read barcode between the first pressed key and until no key was pressed during a certain amount of time

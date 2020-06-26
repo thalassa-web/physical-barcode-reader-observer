@@ -12,7 +12,7 @@ interface IBarcodeTypeDefiner {
  * Liste des symbologies en fonction du préfixe AIM
  * @see https://support.honeywellaidc.com/s/article/List-of-barcode-symbology-AIM-Identifiers
  */
-const AIM_PREFIXES = new Map<string, AIMSymbology>([
+export const AIM_PREFIXES = new Map<string, AIMSymbology>([
   [']A0', AIMSymbology.CODE_39],
   [']A1', AIMSymbology.CODE_39],
   [']A2', AIMSymbology.CODE_39],
